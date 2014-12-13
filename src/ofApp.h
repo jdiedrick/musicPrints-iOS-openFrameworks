@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ofxiOS.h"
 #include "ofxiOSExtras.h"
+#include "ofxOpenCv.h"
 
 class ofApp : public ofxiOSApp {
 	
@@ -22,6 +23,16 @@ class ofApp : public ofxiOSApp {
         void gotFocus();
         void gotMemoryWarning();
         void deviceOrientationChanged(int newOrientation);
+    
+        //video and opencv
+        int camW;
+        int camH;
+        ofVideoGrabber grabber;
+        ofxCvColorImage	colorImg;
+        ofxCvGrayscaleImage grayImage;
+    
+        std::vector<float> grayscaleVerticalLine;
+    
 
 };
 
