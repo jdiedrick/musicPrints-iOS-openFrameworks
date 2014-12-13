@@ -14,6 +14,13 @@ void ofApp::setup(){
     colorImg.allocate(camW, camH);
     grayImage.allocate(camW, camH);
     cout << "of w: " << ofGetWidth() << " of h: " << ofGetHeight() << endl;
+    
+    //setup our grayimage vertical line vector, throw all black (0) into it
+    for (int y=0; y<grayImage.getHeight(); y++){
+        grayscaleVerticalLine.push_back(0);
+    }
+    
+    
 }
 
 //--------------------------------------------------------------
@@ -30,24 +37,25 @@ void ofApp::update(){
             
             //collect the grayscale values from the center vertical line in the grayscale image, store in a vector
            grayImagePixels = grayImage.getPixels();
-           // std::vector<int> grayscaleVerticalLine;
+            
             
             for( int y = 0; y<grayImage.getHeight(); y++){
                 int position = grayImage.getWidth()/2 + (y * grayImage.getWidth());
                 
-                grayscaleVerticalLine.push_back(grayImagePixels[position]);
+                grayscaleVerticalLine[y] = grayImagePixels[position];
                 
             }
             
-            int totalValue = 0;
             
-            for (int i = 0; i<grayscaleVerticalLine.size(); i++){
-               totalValue += grayscaleVerticalLine[i];
-            }
+            //int totalValue = 0;
+            
+            //for (int i = 0; i<grayscaleVerticalLine.size(); i++){
+            //   totalValue += grayscaleVerticalLine[i];
+            //}
             
             //cout << totalValue/grayscaleVerticalLine.size() << endl;
             
-                totalValue = 0;
+            //    totalValue = 0;
         
             //grayscaleVerticalLine.clear();
             
@@ -78,8 +86,8 @@ void ofApp::draw(){
     }
     
     verticalLine.draw();
-    grayscaleVerticalLine.clear();
-        //after drawing the line, bake sure to clear the values
+    //grayscaleVerticalLine.clear(); //after drawing the line, make sure to clear the values
+
 
 }
 
