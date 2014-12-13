@@ -30,8 +30,8 @@ class ofApp : public ofxiOSApp {
         ofVideoGrabber grabber;
         ofxCvColorImage	colorImg;
         ofxCvGrayscaleImage grayImage;
-    
-        std::vector<float> grayscaleVerticalLine;
+        unsigned char* grayImagePixels;
+        std::vector<int> grayscaleVerticalLine;
     
 
 };
