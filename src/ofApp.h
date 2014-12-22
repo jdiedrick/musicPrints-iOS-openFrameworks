@@ -4,6 +4,7 @@
 #include "ofxiOS.h"
 #include "ofxiOSExtras.h"
 #include "ofxOpenCv.h"
+#include "oscillator.h"
 
 class ofApp : public ofxiOSApp {
 	
@@ -33,6 +34,10 @@ class ofApp : public ofxiOSApp {
         unsigned char* grayImagePixels;
         std::vector<int> grayscaleVerticalLine;
     
+        //audio
+        void audioOut(float * input, int bufferSize, int nChannels);
+        ofSoundStream stream;
+        std::vector<oscillator> oscillators;
 
 };
 

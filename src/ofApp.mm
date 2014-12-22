@@ -20,6 +20,29 @@ void ofApp::setup(){
         grayscaleVerticalLine.push_back(0);
     }
     
+    //setup audio
+    int sampleRate = 44100;
+    int bufferSize = 512;
+    ofSoundStreamSetup(2, 0, this, sampleRate, bufferSize, 4);
+    
+    
+    int numberofOscillators = grayImage.getHeight();
+    
+    for (int i=0; i<numberofOscillators; i++){
+        oscillator osc;
+        osc.setup(44100);
+        osc.setVolume(0.5);
+        
+        //scale freq for osc depending on how many we have
+        osc.setFrequency(ofMap(i, 0, numberofOscillators-1, 2000, 80));
+        oscillators.push_back(osc);
+    }
+    
+    cout << "oscillators size: " << oscillators.size() << endl;
+    
+    for (int i = 0; i<oscillators.size(); i++){
+        cout << "osc #" << i << ": freq: " << oscillators[i].getFrequency() << endl;
+    }
     
 }
 
@@ -42,25 +65,20 @@ void ofApp::update(){
             for( int y = 0; y<grayImage.getHeight(); y++){
                 int position = grayImage.getWidth()/2 + (y * grayImage.getWidth());
                 
-                grayscaleVerticalLine[y] = grayImagePixels[position];
+               // grayscaleVerticalLine[y] = grayImagePixels[position];
+                
+                float invertedGrayscaleValue = 255 - grayImagePixels[position];
+                invertedGrayscaleValue = invertedGrayscaleValue > 200 ? 255 : 0;
+                grayscaleVerticalLine[y] = invertedGrayscaleValue;
                 
             }
             
-            
-            //int totalValue = 0;
-            
-            //for (int i = 0; i<grayscaleVerticalLine.size(); i++){
-            //   totalValue += grayscaleVerticalLine[i];
-            //}
-            
-            //cout << totalValue/grayscaleVerticalLine.size() << endl;
-            
-            //    totalValue = 0;
-        
-            //grayscaleVerticalLine.clear();
-            
-            
-            
+            //change osc volumes depending on black/white value in vertical line from camrea
+            for (int i = 0; i<oscillators.size(); i++) {
+                float new_volume = ofMap(grayscaleVerticalLine[i], 0, 255, 0.0, 1.0);
+                oscillators[i].setVolume(new_volume);
+            }
+    
         }
     }
 
@@ -86,8 +104,6 @@ void ofApp::draw(){
     }
     
     verticalLine.draw();
-    //grayscaleVerticalLine.clear(); //after drawing the line, make sure to clear the values
-
 
 }
 
@@ -140,3 +156,27 @@ void ofApp::gotMemoryWarning(){
 void ofApp::deviceOrientationChanged(int newOrientation){
 
 }
+
+//--------------------------------------------------------------
+void ofApp::audioOut(float * output, int bufferSize, int nChannels){
+    
+    for (int i = 0; i < bufferSize; i++){
+        
+        float sample = 0;
+        
+        int totalSize = oscillators.size(); // change to any number for testing (50, 100 etc)
+        
+        for (int i=0; i<totalSize; i++) {
+            sample += oscillators[i].getSample();
+        }
+        
+        sample = sample / totalSize;
+        
+        output[i*nChannels    ] = sample;
+        output[i*nChannels + 1] = sample;
+        
+    }
+    
+    
+}
+
