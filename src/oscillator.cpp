@@ -11,13 +11,16 @@
 #include "oscillator.h"
 
 void oscillator::setup (int sampRate){
+    phase = 0;
     sampleRate = sampRate;
     type = sineWave;
 }
 
 void oscillator::setFrequency(float freq){
     frequency = freq;
-    phaseAdder = (float)(frequency * TWO_PI) / (float)sampleRate;
+    //phaseAdder = (float)(frequency * TWO_PI) / (float)sampleRate; //for getSample() method
+    phaseAdder = (float)frequency  / (float)sampleRate; // for getWavetableSample() method
+
 }
 
 void oscillator::setVolume(float vol){
@@ -48,4 +51,21 @@ float oscillator::getSample(){
         float pct = phase / TWO_PI;
         return ofMap(pct, 0, 1, 1, -1) * volume;
     }
+}
+
+
+
+void oscillator::updateWaveform(int waveformResolution){
+    waveform.resize(waveformResolution);
+    float waveformStep = (M_PI * 2.) / (float) waveform.size();
+    for(int i = 0; i < waveform.size(); i++) {
+        waveform[i] = sin(i * waveformStep);        
+    }
+}
+
+
+float oscillator::getWavetableSample(){
+    phase += phaseAdder;
+    int waveformIndex = (int)(phase * waveform.size()) % waveform.size();
+    return waveform[waveformIndex] * volume;
 }

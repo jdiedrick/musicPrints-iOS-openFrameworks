@@ -37,4 +37,10 @@ public:
     
     float getSample();
     
+
+    std::vector<float> waveform; // this is the lookup table
+    void updateWaveform(int waveformResolution);
+    float getWavetableSample();
+
+    
 };

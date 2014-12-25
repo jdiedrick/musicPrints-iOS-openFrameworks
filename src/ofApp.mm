@@ -23,18 +23,17 @@ void ofApp::setup(){
     //setup audio
     int sampleRate = 44100;
     int bufferSize = 512;
-    ofSoundStreamSetup(2, 0, this, sampleRate, bufferSize, 4);
+    ofSoundStreamSetup(1, 0, this, sampleRate, bufferSize, 4);
     
     
-    int numberofOscillators = grayImage.getHeight();
+    int numberofOscillators = 50;//grayImage.getHeight();
     
     for (int i=0; i<numberofOscillators; i++){
         oscillator osc;
-        osc.setup(44100);
-        osc.setVolume(0.5);
-        
-        //scale freq for osc depending on how many we have
-        osc.setFrequency(ofMap(i, 0, numberofOscillators-1, 2000, 80));
+        osc.setup(44100); // set sample rate
+        osc.setVolume(0.5); // set volume
+        osc.setFrequency(ofMap(i, 0, numberofOscillators-1, 2000, 80)); //scale freq depending on # of osc
+        osc.updateWaveform(8);
         oscillators.push_back(osc);
     }
     
@@ -59,17 +58,17 @@ void ofApp::update(){
             grayImage = colorImg;
             
             //collect the grayscale values from the center vertical line in the grayscale image, store in a vector
-           grayImagePixels = grayImage.getPixels();
+            grayImagePixels = grayImage.getPixels();
             
             
             for( int y = 0; y<grayImage.getHeight(); y++){
                 int position = grayImage.getWidth()/2 + (y * grayImage.getWidth());
                 
-               // grayscaleVerticalLine[y] = grayImagePixels[position];
+                // grayscaleVerticalLine[y] = grayImagePixels[position];
                 
                 float invertedGrayscaleValue = 255 - grayImagePixels[position];
-                invertedGrayscaleValue = invertedGrayscaleValue > 200 ? 255 : 0;
-                grayscaleVerticalLine[y] = invertedGrayscaleValue;
+                invertedGrayscaleValue = invertedGrayscaleValue > 200 ? 255 : 0; // set a threshold, if over 200, its 255, else its 0
+                grayscaleVerticalLine[y] = invertedGrayscaleValue; // store these values in an array
                 
             }
             
@@ -167,13 +166,14 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels){
         int totalSize = oscillators.size(); // change to any number for testing (50, 100 etc)
         
         for (int i=0; i<totalSize; i++) {
-            sample += oscillators[i].getSample();
+            //sample += oscillators[i].getSample();
+            sample += oscillators[i].getWavetableSample();
         }
         
         sample = sample / totalSize;
         
         output[i*nChannels    ] = sample;
-        output[i*nChannels + 1] = sample;
+       // output[i*nChannels + 1] = sample;
         
     }
     
