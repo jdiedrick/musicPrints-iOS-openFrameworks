@@ -23,17 +23,18 @@ void ofApp::setup(){
     //setup audio
     int sampleRate = 44100;
     int bufferSize = 512;
-    ofSoundStreamSetup(1, 0, this, sampleRate, bufferSize, 4);
+    ofSoundStreamSetup(1, 0, this, sampleRate, bufferSize, 2);
     
+    //here is where we set the total number of oscillators, from 50 to 100 to the height of our camera gray image
+    //50-100 seems to work right now, even with crazy low sampleRate/buffer size...(sample rate of 50 and buffer size of 8)
     
     int numberofOscillators = 50;//grayImage.getHeight();
-    
     for (int i=0; i<numberofOscillators; i++){
         oscillator osc;
-        osc.setup(44100); // set sample rate
+        osc.setup(sampleRate); // set sample rate
         osc.setVolume(0.5); // set volume
         osc.setFrequency(ofMap(i, 0, numberofOscillators-1, 2000, 80)); //scale freq depending on # of osc
-        osc.updateWaveform(8);
+        osc.updateWaveform(3);
         oscillators.push_back(osc);
     }
     
@@ -48,6 +49,7 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
     
+    //update ghr grabber
     grabber.update();
     
     if (grabber.isFrameNew()) {
@@ -61,6 +63,7 @@ void ofApp::update(){
             grayImagePixels = grayImage.getPixels();
             
             
+            //get the center vertical pixels from the camera
             for( int y = 0; y<grayImage.getHeight(); y++){
                 int position = grayImage.getWidth()/2 + (y * grayImage.getWidth());
                 
@@ -85,9 +88,11 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-            
+    
+    //draw our gray image
     grayImage.draw(0, 0);
     
+    //draw a line that shows the inverse colors, so we can understand what we're looking at/listeing to
     ofMesh verticalLine;
     verticalLine.setMode(OF_PRIMITIVE_LINE_STRIP);
     verticalLine.enableColors();
@@ -163,7 +168,7 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels){
         
         float sample = 0;
         
-        int totalSize = oscillators.size(); // change to any number for testing (50, 100 etc)
+        int totalSize = oscillators.size(); // you change the value here as well testing (50, 100 etc)
         
         for (int i=0; i<totalSize; i++) {
             //sample += oscillators[i].getSample();
@@ -176,7 +181,5 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels){
        // output[i*nChannels + 1] = sample;
         
     }
-    
-    
 }
 
