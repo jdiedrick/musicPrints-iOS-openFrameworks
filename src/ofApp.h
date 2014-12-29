@@ -5,6 +5,7 @@
 #include "ofxiOSExtras.h"
 #include "ofxOpenCv.h"
 #include "oscillator.h"
+#include "ofxiPhoneTorch.h"
 
 class ofApp : public ofxiOSApp {
 	
@@ -38,6 +39,9 @@ class ofApp : public ofxiOSApp {
         void audioOut(float * input, int bufferSize, int nChannels);
         ofSoundStream stream;
         std::vector<oscillator> oscillators;
+    
+        //torch
+        ofxiPhoneTorch flashlight;
 
 };
 

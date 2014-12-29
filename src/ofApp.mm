@@ -44,6 +44,9 @@ void ofApp::setup(){
         cout << "osc #" << i << ": freq: " << oscillators[i].getFrequency() << endl;
     }
     
+    //turn on flashlight
+    flashlight.toggle(true);
+    
 }
 
 //--------------------------------------------------------------
