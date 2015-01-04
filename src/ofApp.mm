@@ -161,7 +161,24 @@ void ofApp::gotMemoryWarning(){
 
 //--------------------------------------------------------------
 void ofApp::deviceOrientationChanged(int newOrientation){
-
+    
+    switch (newOrientation) {
+        case 1:
+            cout << "i am in default portrait mode" << endl;
+            break;
+        case 2:
+            cout << "i am upside down help!" << endl;
+            break;
+        case 3:
+            cout << "i am in landscape mode, turned to the left (counter clockwise)" << endl;
+            break;
+        case 4:
+            cout << "i am in landscape mode, turned to the right (clockwise)" << endl;
+            break;
+        default:
+            break;
+    }
+    
 }
 
 //--------------------------------------------------------------
