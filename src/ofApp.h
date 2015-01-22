@@ -43,7 +43,7 @@ class ofApp : public ofxiOSApp {
         void audioOut(float * input, int bufferSize, int nChannels);
         ofSoundStream stream;
         std::vector<oscillator> oscillators;
-        float currentSamples;
+        void printOscillators();
     
         //torch
         ofxiPhoneTorch flashlight;
