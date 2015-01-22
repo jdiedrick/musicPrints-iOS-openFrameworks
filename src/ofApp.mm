@@ -7,19 +7,16 @@
 #define HIGH_FREQUENCY 2000
 #define LOW_FREQUENCY 80
 #define DIVIDING_FACTOR 15
-//this should be changed to the vertical height of the screen depending on orientation
-
 
 //--------------------------------------------------------------
 void ofApp::setup(){
     
     setupCamera();
     setupAudio();
-    //setupFlashlight();
-
+    flashlight.toggle(true);
+    
     if(ofGetOrientation() == 1){
     resetForDefault();
-    //resetForLandscapeLeft();
     }
     
     
@@ -28,7 +25,6 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
     
-    //update grabber
     grabber.update();
     
     if (grabber.isFrameNew()) {
@@ -41,9 +37,9 @@ void ofApp::update(){
             //collect the grayscale values from the center vertical line in the grayscale image, store in a vector
             grayImagePixels = grayImage.getPixels();
             
+            //update depending on orientation
             if(isDefault){
-            updateForDefault();
-            //updateForLandscapeLeft();
+                updateForDefault();
             }else if (isLandscapeLeft){
                 updateForLandscapeLeft();
             }else if (isLandscapeRight){
@@ -54,7 +50,6 @@ void ofApp::update(){
     
         }
     }
-
 }
 
 //--------------------------------------------------------------
@@ -585,14 +580,6 @@ void ofApp::drawForLandscapeRight(){
 
 }
 
-#pragma mark - Flashlight
-
-void ofApp::setupFlashlight(){
-    
-    //turn on flashlight
-    flashlight.toggle(true);
-    
-}
 
 
 #pragma mark - Events
@@ -613,7 +600,7 @@ void ofApp::touchMoved(ofTouchEventArgs & touch){
 
 //--------------------------------------------------------------
 void ofApp::touchUp(ofTouchEventArgs & touch){
-    
+    flashlight.state() == true ? flashlight.toggle(false) : flashlight.toggle(true);
 }
 
 //--------------------------------------------------------------

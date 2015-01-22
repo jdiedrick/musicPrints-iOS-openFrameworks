@@ -47,7 +47,8 @@ class ofApp : public ofxiOSApp {
     
         //torch
         ofxiPhoneTorch flashlight;
-        void setupFlashlight();
+        void toggleFlashlight();
+
     
         //orientation handling
         void resetForDefault();
