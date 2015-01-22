@@ -1,58 +1,33 @@
 #include "ofApp.h"
+#include <Accelerate/Accelerate.h>
+
+#define SAMPLE_RATE 44100
+#define BUFFER_SIZE 512
+#define NUMBER_OF_OSCILLATORS 1
+#define THRESHOLD 200
+#define DIVIDING_FACTOR 10
+//this should be changed to the vertical height of the screen depending on orientation
+
 
 //--------------------------------------------------------------
 void ofApp::setup(){
     
-    camW = ofGetWidth();
-    camH = ofGetHeight();
+    setupCamera();
+    setupAudio();
+    //setupFlashlight();
 
-    grabber.initGrabber(camW, camH);
+   // if(ofGetOrientation() == 1){
+    resetForDefault();
+    //resetForLandscapeLeft();
+   //}
     
-    camW = grabber.getWidth();
-    camH = grabber.getHeight();
-    
-    colorImg.allocate(camW, camH);
-    grayImage.allocate(camW, camH);
-    cout << "of w: " << ofGetWidth() << " of h: " << ofGetHeight() << endl;
-    
-    //setup our grayimage vertical line vector, throw all black (0) into it
-    for (int y=0; y<grayImage.getHeight(); y++){
-        grayscaleVerticalLine.push_back(0);
-    }
-    
-    //setup audio
-    int sampleRate = 44100;
-    int bufferSize = 512;
-    ofSoundStreamSetup(1, 0, this, sampleRate, bufferSize, 2);
-    
-    //here is where we set the total number of oscillators, from 50 to 100 to the height of our camera gray image
-    //50-100 seems to work right now, even with crazy low sampleRate/buffer size...(sample rate of 50 and buffer size of 8)
-    
-    int numberofOscillators = 50;//grayImage.getHeight();
-    for (int i=0; i<numberofOscillators; i++){
-        oscillator osc;
-        osc.setup(sampleRate); // set sample rate
-        osc.setVolume(0.5); // set volume
-        osc.setFrequency(ofMap(i, 0, numberofOscillators-1, 2000, 80)); //scale freq depending on # of osc
-        osc.updateWaveform(3);
-        oscillators.push_back(osc);
-    }
-    
-    cout << "oscillators size: " << oscillators.size() << endl;
-    
-    for (int i = 0; i<oscillators.size(); i++){
-        cout << "osc #" << i << ": freq: " << oscillators[i].getFrequency() << endl;
-    }
-    
-    //turn on flashlight
-    flashlight.toggle(true);
     
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     
-    //update ghr grabber
+    //update grabber
     grabber.update();
     
     if (grabber.isFrameNew()) {
@@ -65,24 +40,12 @@ void ofApp::update(){
             //collect the grayscale values from the center vertical line in the grayscale image, store in a vector
             grayImagePixels = grayImage.getPixels();
             
-            
-            //get the center vertical pixels from the camera
-            for( int y = 0; y<grayImage.getHeight(); y++){
-                int position = grayImage.getWidth()/2 + (y * grayImage.getWidth());
-                
-                // grayscaleVerticalLine[y] = grayImagePixels[position];
-                
-                float invertedGrayscaleValue = 255 - grayImagePixels[position];
-                invertedGrayscaleValue = invertedGrayscaleValue > 200 ? 255 : 0; // set a threshold, if over 200, its 255, else its 0
-                grayscaleVerticalLine[y] = invertedGrayscaleValue; // store these values in an array
-                
-            }
-            
-            //change osc volumes depending on black/white value in vertical line from camrea
-            for (int i = 0; i<oscillators.size(); i++) {
-                float new_volume = ofMap(grayscaleVerticalLine[i], 0, 255, 0.0, 1.0);
-                oscillators[i].setVolume(new_volume);
-            }
+            //if(isDefault){
+            updateForDefault();
+            //updateForLandscapeLeft();
+            //}else if (isLandscapeLeft){
+            //    updateForLandscapeLeft();
+           // }
     
         }
     }
@@ -92,93 +55,77 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-    //draw our gray image
-    grayImage.draw(0, 0);
-    
-    //draw a line that shows the inverse colors, so we can understand what we're looking at/listeing to
-    ofMesh verticalLine;
-    verticalLine.setMode(OF_PRIMITIVE_LINE_STRIP);
-    verticalLine.enableColors();
-    
-    for (int i=0; i<grayscaleVerticalLine.size(); i++) {
-        verticalLine.addVertex(ofVec3f(ofGetWidth()/2, i, 0));
-        
-        float invertedGrayscaleColor = (255 - grayscaleVerticalLine[i]) / 255.0;
-        verticalLine.addColor(ofFloatColor(invertedGrayscaleColor,
-                                           invertedGrayscaleColor,
-                                           invertedGrayscaleColor,
-                                           1.0));
-    }
-    
-    verticalLine.draw();
-
-}
-
-//--------------------------------------------------------------
-void ofApp::exit(){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::touchDown(ofTouchEventArgs & touch){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::touchMoved(ofTouchEventArgs & touch){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::touchUp(ofTouchEventArgs & touch){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::touchDoubleTap(ofTouchEventArgs & touch){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::touchCancelled(ofTouchEventArgs & touch){
-    
-}
-
-//--------------------------------------------------------------
-void ofApp::lostFocus(){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::gotFocus(){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::gotMemoryWarning(){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::deviceOrientationChanged(int newOrientation){
-    
-    switch (newOrientation) {
-        case 1:
-            cout << "i am in default portrait mode" << endl;
+    /*
+    switch (ofGetOrientation()) {
+        case OF_ORIENTATION_DEFAULT:
+            //drawForDefault();
+            
             break;
-        case 2:
-            cout << "i am upside down help!" << endl;
+        case OF_ORIENTATION_180:
+            cout << "drawing for upside down" << endl;
+            //drawForUpsideDown();
             break;
-        case 3:
-            cout << "i am in landscape mode, turned to the left (counter clockwise)" << endl;
+        case OF_ORIENTATION_90_LEFT:
+            cout << "drawing for 90 left" << endl;
+
+            //drawForLandscapeLeft();
             break;
-        case 4:
-            cout << "i am in landscape mode, turned to the right (clockwise)" << endl;
+        case OF_ORIENTATION_90_RIGHT:
+            //drawForLandscapeRight();
+            cout << "drawing for 90 right" << endl;
+
             break;
         default:
             break;
     }
+    */
     
+    /*
+    if(isDefault){
+        drawForDefault();
+    }else if(isUpsideDown){
+        drawForUpsideDown();
+    }else if(isLandscapeLeft){
+        drawForLandscapeLeft();
+    }else if(isLandscapeRight){
+        drawForLandscapeRight();
+    }
+     */
+    drawForDefault();
+    //drawForLandscapeLeft();
+
+}
+
+
+#pragma mark - Camera
+
+void ofApp::setupCamera(){
+    
+    //setup camera
+    camW = ofGetWidth();
+    camH = ofGetHeight();
+    
+    grabber.initGrabber(camW, camH);
+    
+    camW = grabber.getWidth();
+    camH = grabber.getHeight();
+    
+    //setup cv images
+    colorImg.allocate(camW, camH);
+    grayImage.allocate(camW, camH);
+    cout << "of w: " << ofGetWidth() << " of h: " << ofGetHeight() << endl;
+}
+
+
+#pragma mark - Audio
+
+void ofApp::setupAudio(){
+    
+    //setup audio
+    int sampleRate = SAMPLE_RATE;
+    int bufferSize = BUFFER_SIZE;
+    ofSoundStreamSetup(1, 0, this, sampleRate, bufferSize, 2);
+
 }
 
 //--------------------------------------------------------------
@@ -190,10 +137,13 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels){
         
         int totalSize = oscillators.size(); // you change the value here as well testing (50, 100 etc)
         
+        
         for (int i=0; i<totalSize; i++) {
             //sample += oscillators[i].getSample();
             sample += oscillators[i].getWavetableSample();
         }
+        
+      
         
         sample = sample / totalSize;
         
@@ -201,5 +151,314 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels){
        // output[i*nChannels + 1] = sample;
         
     }
+}
+
+#pragma mark - Orientation Handling
+
+#pragma mark Orientation Change
+
+//--------------------------------------------------------------
+void ofApp::deviceOrientationChanged(int newOrientation){
+    
+    switch (newOrientation) {
+        case 1:
+            resetForDefault();
+            break;
+        case 2:
+            resetForUpsideDown();
+            break;
+        case 3:
+            resetForLandscapeLeft();
+            break;
+        case 4:
+            resetForLandscapeRight();
+            break;
+        default:
+            break;
+    }
+    
+}
+
+#pragma mark Reset
+void ofApp::resetForDefault(){
+    cout << "i am in default  mode" << endl;
+    isDefault = true;
+    isUpsideDown = isLandscapeRight = isLandscapeLeft = false;
+    grayscaleVerticalLine.clear();
+    //setup our grayimage vertical line vector, throw all black (0) into it
+   
+    for (int y=0; y<grayImage.getHeight(); y++){
+        grayscaleVerticalLine.push_back(0);
+    }
+    
+    //here is where we set the total number of oscillators, from 50 to 100 to the height of our camera gray image
+    //50-100 seems to work right now, even with crazy low sampleRate/buffer size...(sample rate of 50 and buffer size of 8)
+    
+    oscillators.clear();
+    int numberofOscillators = grayImage.getHeight()/DIVIDING_FACTOR;
+    for (int i=0; i<numberofOscillators; i++){
+        oscillator osc;
+        osc.setup(SAMPLE_RATE); // set sample rate
+        osc.setVolume(0.5); // set volume
+        osc.setFrequency(ofMap(i, 0, numberofOscillators-1, 2000, 80)); //scale freq depending on # of osc
+        osc.updateWaveform(3);
+        oscillators.push_back(osc);
+    }
+    
+    //set up our scaled down version
+    for (int i=0; i<numberofOscillators; i++){
+        grayScaleVerticalLineSmall.push_back(0);
+    }
+
+
+    
+    cout << "oscillators size: " << oscillators.size() << endl;
+    for (int i = 0; i<oscillators.size(); i++){
+        cout << "osc #" << i << ": freq: " << oscillators[i].getFrequency() << endl;
+    }
+    
+    
+}
+
+void ofApp::resetForUpsideDown(){
+    cout << "i am upside down help!" << endl;
+    isUpsideDown  = true;
+    isDefault = isLandscapeRight = isLandscapeLeft = false;
+}
+
+void ofApp::resetForLandscapeLeft(){
+    cout << "i am in landscape mode, turned to the left (counter clockwise)" << endl;
+    isLandscapeLeft  = true;
+    isDefault = isLandscapeRight = isUpsideDown = false;
+    grayscaleVerticalLine.clear();
+    
+    for (int y=0; y<grayImage.getWidth(); y++){
+        grayscaleVerticalLine.push_back(0);
+    }
+    
+    
+
+    //here is where we set the total number of oscillators, from 50 to 100 to the height of our camera gray image
+    //50-100 seems to work right now, even with crazy low sampleRate/buffer size...(sample rate of 50 and buffer size of 8)
+    
+    oscillators.clear();
+    int numberofOscillators = NUMBER_OF_OSCILLATORS;//grayImage.getWidth();
+    for (int i=0; i<numberofOscillators; i++){
+        oscillator osc;
+        osc.setup(SAMPLE_RATE); // set sample rate
+        osc.setVolume(0.5); // set volume
+        osc.setFrequency(ofMap(i, 0, numberofOscillators-1, 2000, 80)); //scale freq depending on # of osc
+        osc.updateWaveform(3);
+        oscillators.push_back(osc);
+    }
+    
+    
+    /* debugging
+     cout << "oscillators size: " << oscillators.size() << endl;
+     for (int i = 0; i<oscillators.size(); i++){
+     cout << "osc #" << i << ": freq: " << oscillators[i].getFrequency() << endl;
+     }
+     */
+}
+
+void ofApp::resetForLandscapeRight(){
+    cout << "i am in landscape mode, turned to the right (clockwise)" << endl;
+    isLandscapeRight  = true;
+    isDefault = isLandscapeLeft = isUpsideDown = false;
+}
+
+#pragma mark Update
+
+void ofApp::updateForDefault(){
+    //get the center vertical pixels from the camera
+    for( int y = 0; y<grayImage.getHeight(); y++){
+        int position = grayImage.getWidth()/2 + (y * grayImage.getWidth());
+        
+        // grayscaleVerticalLine[y] = grayImagePixels[position];
+        float invertedGrayscaleValue = 255 - grayImagePixels[position];
+        invertedGrayscaleValue = invertedGrayscaleValue > THRESHOLD ? 255 : 0; // set a threshold, if over 200, its 255, else its 0
+        grayscaleVerticalLine[y] = invertedGrayscaleValue; // store these values in an array
+        
+        if (grayscaleVerticalLine[y] == 255) {
+            grayScaleVerticalLineSmall[y/DIVIDING_FACTOR] = 1;
+        }else{
+            grayScaleVerticalLineSmall[y/DIVIDING_FACTOR] = 0;
+        }
+        
+    }
+    
+    
+    
+    //change osc volumes depending on black/white value in vertical line from camrea
+    for (int i = 0; i<oscillators.size(); i++) {
+        //float new_volume = ofMap(grayscaleVerticalLine[i], 0, 255, 0.0, 1.0);
+        float new_volume = grayScaleVerticalLineSmall[i];
+        oscillators[i].setVolume(new_volume);
+    }
+}
+
+void ofApp::updateForUpsideDown(){
+    
+}
+
+void ofApp::updateForLandscapeLeft(){
+    //get the center vertical pixels from the camera
+    for(int y=0; y<grayImage.getHeight(); y++){
+        for (int x=0; x<grayImage.getWidth(); x++) {
+            
+            if (y == grayImage.getWidth()/2) {
+                int position = x + (y * grayImage.getWidth());
+                float invertedGrayscaleValue = 255 - grayImagePixels[position];
+                invertedGrayscaleValue = invertedGrayscaleValue > THRESHOLD ? 255 : 0; // set a threshold, if over 200, its 255, else its 0
+                grayscaleVerticalLine[x] = invertedGrayscaleValue; // store these values in an arra
+            }
+            
+            
+        }
+        
+        //int position = grayImage.getHeight()/2 + (x * grayImage.getHeight());
+       // int position = grayImage.getHeight()/2 + ( x * grayImage.getHeight());
+        //int position = grayImage.getWidth()/2 + (y * grayImage.getWidth());
+
+       
+    }
+    
+    for (int i = 0; i<oscillators.size(); i++) {
+        float new_volume = ofMap(grayscaleVerticalLine[i], 0, 255, 0.0, 1.0);
+        oscillators[i].setVolume(new_volume);
+    }
+    
+}
+
+void ofApp::updateForLandscapeRight(){
+    
+}
+
+#pragma mark Draw
+
+void ofApp::drawForDefault(){
+
+    //draw our gray image
+    grayImage.draw(0, 0);
+    
+    //draw a line that shows the inverse colors, so we can understand what we're looking at/listeing to
+    ofMesh verticalLine;
+    verticalLine.setMode(OF_PRIMITIVE_LINE_STRIP);
+    verticalLine.enableColors();
+    
+    
+    for (int i=0; i<grayscaleVerticalLine.size(); i++) {
+        
+        //change vertex position based on orientation
+        
+        verticalLine.addVertex(ofVec3f(ofGetWidth()/2, i, 0));
+        float invertedGrayscaleColor = (grayscaleVerticalLine[i]) / 255.0;
+        verticalLine.addColor(ofFloatColor(invertedGrayscaleColor,
+                                           invertedGrayscaleColor,
+                                           invertedGrayscaleColor,
+                                           1.0));
+    }
+    
+    verticalLine.draw();
+        
+    
+}
+
+void ofApp::drawForUpsideDown(){
+    //cout << "drawing for upside down" << endl;
+}
+
+void ofApp::drawForLandscapeLeft(){
+   //cout << "drawing for landscape left" << endl;
+    
+    ofPushStyle();
+   // ofRotate(-90);
+    //draw our gray image
+    grayImage.draw(0, 0);
+    
+    //draw a line that shows the inverse colors, so we can understand what we're looking at/listeing to
+    ofMesh verticalLine;
+    verticalLine.setMode(OF_PRIMITIVE_LINE_STRIP);
+    verticalLine.enableColors();
+    
+    
+    //for (int i=grayscaleVerticalLine.size(); i>0; i--) {
+    for (int i=0; i<grayscaleVerticalLine.size(); i++){
+
+        
+        //change vertex position based on orientation
+        
+        verticalLine.addVertex(ofVec3f(i, ofGetHeight()/2, 0));
+        float invertedGrayscaleColor = (grayscaleVerticalLine[i]) / 255.0;
+        verticalLine.addColor(ofFloatColor(invertedGrayscaleColor,
+                                           invertedGrayscaleColor,
+                                           invertedGrayscaleColor,
+                                           1.0));
+    }
+    
+    verticalLine.draw();
+    ofPopStyle();
+
+}
+
+void ofApp::drawForLandscapeRight(){
+
+
+}
+
+#pragma mark - Flashlight
+
+void ofApp::setupFlashlight(){
+    
+    //turn on flashlight
+    flashlight.toggle(true);
+    
+}
+
+
+#pragma mark - Events
+//--------------------------------------------------------------
+void ofApp::exit(){
+    
+}
+
+//--------------------------------------------------------------
+void ofApp::touchDown(ofTouchEventArgs & touch){
+    
+}
+
+//--------------------------------------------------------------
+void ofApp::touchMoved(ofTouchEventArgs & touch){
+    
+}
+
+//--------------------------------------------------------------
+void ofApp::touchUp(ofTouchEventArgs & touch){
+    
+}
+
+//--------------------------------------------------------------
+void ofApp::touchDoubleTap(ofTouchEventArgs & touch){
+    
+}
+
+//--------------------------------------------------------------
+void ofApp::touchCancelled(ofTouchEventArgs & touch){
+    
+}
+
+//--------------------------------------------------------------
+void ofApp::lostFocus(){
+    
+}
+
+//--------------------------------------------------------------
+void ofApp::gotFocus(){
+    
+}
+
+//--------------------------------------------------------------
+void ofApp::gotMemoryWarning(){
+    
 }
 

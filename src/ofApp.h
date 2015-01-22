@@ -34,15 +34,41 @@ class ofApp : public ofxiOSApp {
         ofxCvGrayscaleImage grayImage;
         unsigned char* grayImagePixels;
         std::vector<int> grayscaleVerticalLine;
+        std::vector<int> grayScaleVerticalLineSmall;
+        void setupCamera();
+
     
         //audio
+        void setupAudio();
         void audioOut(float * input, int bufferSize, int nChannels);
         ofSoundStream stream;
         std::vector<oscillator> oscillators;
+        float currentSamples;
     
         //torch
         ofxiPhoneTorch flashlight;
-
+        void setupFlashlight();
+    
+        //orientation handling
+        void resetForDefault();
+        void resetForUpsideDown();
+        void resetForLandscapeLeft();
+        void resetForLandscapeRight();
+    
+        void drawForDefault();
+        void drawForUpsideDown();
+        void drawForLandscapeLeft();
+        void drawForLandscapeRight();
+    
+        void updateForDefault();
+        void updateForUpsideDown();
+        void updateForLandscapeLeft();
+        void updateForLandscapeRight();
+    
+        bool isDefault;
+        bool isUpsideDown;
+        bool isLandscapeLeft;
+        bool isLandscapeRight;
 };
 
 
