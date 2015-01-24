@@ -12,9 +12,8 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    
+    ofBackground(255, 0, 0);
     setupCamera();
-    setupAudio();
     flashlight.toggle(true);
     
     if(ofGetOrientation() == 1){
@@ -26,6 +25,8 @@ void ofApp::setup(){
     } else if(ofGetOrientation() == 4){
         resetForLandscapeRight();
     }
+    setupAudio();
+
     
 }
 
@@ -79,10 +80,11 @@ void ofApp::draw(){
 void ofApp::setupCamera(){
     
     //setup camera
-    camW = ofGetWidth();
-    camH = ofGetHeight();
-    
-    grabber.initGrabber(camW, camH);
+    //camW = ofGetWidth();
+    //camH = ofGetHeight();
+    cout << "of w: " << ofGetWindowWidth() << " of h: " << ofGetWindowHeight() << endl;
+
+    grabber.initGrabber(ofGetWidth(), ofGetHeight());
     
     camW = grabber.getWidth();
     camH = grabber.getHeight();
@@ -90,7 +92,8 @@ void ofApp::setupCamera(){
     //setup cv images
     colorImg.allocate(camW, camH);
     grayImage.allocate(camW, camH);
-    //cout << "of w: " << ofGetWidth() << " of h: " << ofGetHeight() << endl;
+    cout << "of w: " << ofGetWidth() << " of h: " << ofGetHeight() << endl;
+    cout << "grabber w: " << grabber.getWidth() << " of h: " << grabber.getHeight() << endl;
 }
 
 #pragma mark - Audio
