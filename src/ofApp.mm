@@ -3,7 +3,7 @@
 
 #define SAMPLE_RATE 44100
 #define BUFFER_SIZE 512
-#define THRESHOLD 200
+#define THRESHOLD 100
 #define HIGH_FREQUENCY 2000
 #define LOW_FREQUENCY 20
 #define DIVIDING_FACTOR 25
@@ -13,7 +13,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofBackground(255, 0, 0);
-    
+    setupUI();
     setupCamera();
     
     if(ofGetOrientation() == 1){
@@ -95,6 +95,8 @@ void ofApp::setupCamera(){
     grayImage.allocate(camW, camH);
     cout << "of w: " << ofGetWidth() << " of h: " << ofGetHeight() << endl;
     cout << "grabber w: " << grabber.getWidth() << " of h: " << grabber.getHeight() << endl;
+    
+    thresholdVal = 100;
 }
 
 #pragma mark - Audio
@@ -102,9 +104,9 @@ void ofApp::setupCamera(){
 void ofApp::setupAudio(){
     
     //setup audio
-    int sampleRate = SAMPLE_RATE;
-    int bufferSize = BUFFER_SIZE;
-    ofSoundStreamSetup(1, 0, this, sampleRate, bufferSize, 4);
+    //int sampleRate = SAMPLE_RATE;
+    //int bufferSize = BUFFER_SIZE;
+    ofSoundStreamSetup(2, 0, this, SAMPLE_RATE, BUFFER_SIZE, 4);
 
 }
 
@@ -124,7 +126,7 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels){
         sample = sample / totalSize;
         
         output[i*nChannels    ] = sample;
-       // output[i*nChannels + 1] = sample;
+        output[i*nChannels + 1] = sample;
         
     }
 }
@@ -316,7 +318,7 @@ void ofApp::updateForDefault(){
         
         float invertedGrayscaleValue = 255 - grayImagePixels[position];
         
-        invertedGrayscaleValue = invertedGrayscaleValue > THRESHOLD ? 255 : 0; // set a threshold, if over 200, its 255, else its 0
+        invertedGrayscaleValue = invertedGrayscaleValue > thresholdVal ? 255 : 0; // set a threshold, if over 200, its 255, else its 0
         grayscaleVerticalLine[y] = invertedGrayscaleValue; // store these values in an array
         
         //grayScaleVerticalLineSmall[y/DIVIDING_FACTOR] = (float)grayscaleVerticalLine[y]/255.0;
@@ -345,7 +347,7 @@ void ofApp::updateForUpsideDown(){
         int position = grayImage.getWidth()/2 + (y * grayImage.getWidth());
         
         float invertedGrayscaleValue = 255 - grayImagePixels[position];
-        invertedGrayscaleValue = invertedGrayscaleValue > THRESHOLD ? 255 : 0; // set a threshold, if over 200, its 255, else its 0
+        invertedGrayscaleValue = invertedGrayscaleValue > thresholdVal ? 255 : 0; // set a threshold, if over 200, its 255, else its 0
         grayscaleVerticalLine[y] = invertedGrayscaleValue; // store these values in an array
         
         if (grayscaleVerticalLine[y] == 255) {
@@ -372,7 +374,7 @@ void ofApp::updateForLandscapeLeft(){
             if (y == grayImage.getWidth()/2) {
                 int position = x + (y * grayImage.getWidth());
                 float invertedGrayscaleValue = 255 - grayImagePixels[position];
-                invertedGrayscaleValue = invertedGrayscaleValue > THRESHOLD ? 255 : 0; // set a threshold, if over 200, its 255, else its 0
+                invertedGrayscaleValue = invertedGrayscaleValue > thresholdVal ? 255 : 0; // set a threshold, if over 200, its 255, else its 0
                 grayscaleVerticalLine[x] = invertedGrayscaleValue; // store these values in an arra
                 
                 if (grayscaleVerticalLine[x] == 255) {
@@ -402,7 +404,7 @@ void ofApp::updateForLandscapeRight(){
             if (y == grayImage.getWidth()/2) {
                 int position = x + (y * grayImage.getWidth());
                 float invertedGrayscaleValue = 255 - grayImagePixels[position];
-                invertedGrayscaleValue = invertedGrayscaleValue > THRESHOLD ? 255 : 0; // set a threshold, if over 200, its 255, else its 0
+                invertedGrayscaleValue = invertedGrayscaleValue > thresholdVal ? 255 : 0; // set a threshold, if over 200, its 255, else its 0
                 grayscaleVerticalLine[x] = invertedGrayscaleValue; // store these values in an arra
                 
                 if (grayscaleVerticalLine[x] == 255) {
@@ -696,11 +698,34 @@ void ofApp::drawForLandscapeRight(){
 
 }
 
-#pragma mark - Events
-//--------------------------------------------------------------
-void ofApp::exit(){
-    
+#pragma mark - UI
+
+void ofApp::setupUI(){
+    gui = new ofxUICanvas();		//Creates a canvas at (0,0) using the default width
+    gui->addSlider("THRESHOLD",0.0,255,100);
+    gui->autoSizeToFitWidgets();
+    ofAddListener(gui->newGUIEvent, this, &ofApp::guiEvent);
+    gui->loadSettings(ofxiPhoneGetDocumentsDirectory() + "settings.xml");
+
 }
+
+void ofApp::exit()
+{
+    gui->saveSettings(ofxiPhoneGetDocumentsDirectory() + "settings.xml");
+    delete gui;
+}
+
+void ofApp::guiEvent(ofxUIEventArgs &e)
+{
+    if(e.getName() == "THRESHOLD")
+    {
+        ofxUISlider *slider = e.getSlider();
+        thresholdVal = slider->getScaledValue();
+    }
+}
+
+#pragma mark - Events
+
 
 //--------------------------------------------------------------
 void ofApp::touchDown(ofTouchEventArgs & touch){

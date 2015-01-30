@@ -6,6 +6,7 @@
 #include "ofxOpenCv.h"
 #include "oscillator.h"
 #include "ofxiPhoneTorch.h"
+#include "ofxUI.h"
 
 class ofApp : public ofxiOSApp {
 	
@@ -13,8 +14,7 @@ class ofApp : public ofxiOSApp {
         void setup();
         void update();
         void draw();
-        void exit();
-	
+    
         void touchDown(ofTouchEventArgs & touch);
         void touchMoved(ofTouchEventArgs & touch);
         void touchUp(ofTouchEventArgs & touch);
@@ -36,6 +36,7 @@ class ofApp : public ofxiOSApp {
         std::vector<int> grayscaleVerticalLine;
         std::vector<int> grayScaleVerticalLineSmall;
         void setupCamera();
+        int thresholdVal;
 
     
         //audio
@@ -48,7 +49,12 @@ class ofApp : public ofxiOSApp {
         //torch
         ofxiPhoneTorch flashlight;
         void toggleFlashlight();
-
+    
+        //ofxui
+        ofxUICanvas *gui;
+        void setupUI();
+        void exit();
+        void guiEvent(ofxUIEventArgs &e);
     
         //orientation handling
         void resetForDefault();
