@@ -6,7 +6,7 @@
 #define THRESHOLD 200
 #define HIGH_FREQUENCY 2000
 #define LOW_FREQUENCY 20
-#define DIVIDING_FACTOR 15
+#define DIVIDING_FACTOR 25
 #define INITIAL_VOLUME 0.5
 #define WAVEFORM_RESOLUTION 8
 
@@ -104,7 +104,7 @@ void ofApp::setupAudio(){
     //setup audio
     int sampleRate = SAMPLE_RATE;
     int bufferSize = BUFFER_SIZE;
-    ofSoundStreamSetup(1, 0, this, sampleRate, bufferSize, 2);
+    ofSoundStreamSetup(1, 0, this, sampleRate, bufferSize, 4);
 
 }
 
@@ -432,22 +432,66 @@ void ofApp::drawForDefault(){
     grayImage.draw(0, 0);
     
     //draw a line that shows the inverse colors, so we can understand what we're looking at/listeing to
-    ofMesh verticalLine;
-    verticalLine.setMode(OF_PRIMITIVE_LINE_STRIP);
-    verticalLine.enableColors();
+    ofMesh verticalLine1;
+    verticalLine1.setMode(OF_PRIMITIVE_LINE_STRIP);
+    verticalLine1.enableColors();
     
     for (int i=0; i<grayscaleVerticalLine.size(); i++) {
         
         //change vertex position based on orientation
-        verticalLine.addVertex(ofVec3f(ofGetWidth()/2, i, 0));
+        verticalLine1.addVertex(ofVec3f(ofGetWidth()/2, i, 0));
         float invertedGrayscaleColor = (grayscaleVerticalLine[i]) / 255.0;
-        verticalLine.addColor(ofFloatColor(invertedGrayscaleColor,
+        verticalLine1.addColor(ofFloatColor(invertedGrayscaleColor,
                                            invertedGrayscaleColor,
                                            invertedGrayscaleColor,
                                            1.0));
+        
+        
     }
     
-    verticalLine.draw();
+    verticalLine1.draw();
+    
+    //draw a line that shows the inverse colors, so we can understand what we're looking at/listeing to
+    ofMesh verticalLine2;
+    verticalLine2.setMode(OF_PRIMITIVE_LINE_STRIP);
+    verticalLine2.enableColors();
+    
+    for (int i=0; i<grayscaleVerticalLine.size(); i++) {
+        
+        //change vertex position based on orientation
+        verticalLine2.addVertex(ofVec3f((ofGetWidth()/2) + 1, i, 0));
+        float invertedGrayscaleColor = (grayscaleVerticalLine[i]) / 255.0;
+        verticalLine2.addColor(ofFloatColor(invertedGrayscaleColor,
+                                            invertedGrayscaleColor,
+                                            invertedGrayscaleColor,
+                                            1.0));
+        
+        
+    }
+    
+    verticalLine2.draw();
+    
+    
+    //draw a line that shows the inverse colors, so we can understand what we're looking at/listeing to
+    ofMesh verticalLine3;
+    verticalLine3.setMode(OF_PRIMITIVE_LINE_STRIP);
+    verticalLine3.enableColors();
+    
+    for (int i=0; i<grayscaleVerticalLine.size(); i++) {
+        
+        //change vertex position based on orientation
+        verticalLine3.addVertex(ofVec3f((ofGetWidth()/2) - 1, i, 0));
+        float invertedGrayscaleColor = (grayscaleVerticalLine[i]) / 255.0;
+        verticalLine3.addColor(ofFloatColor(invertedGrayscaleColor,
+                                            invertedGrayscaleColor,
+                                            invertedGrayscaleColor,
+                                            1.0));
+        
+        
+    }
+    
+    verticalLine3.draw();
+    
     
 }
 
@@ -473,6 +517,43 @@ void ofApp::drawForUpsideDown(){
     }
     
     verticalLine.draw();
+    
+    //draw a line that shows the inverse colors, so we can understand what we're looking at/listeing to
+    ofMesh verticalLine2;
+    verticalLine2.setMode(OF_PRIMITIVE_LINE_STRIP);
+    verticalLine2.enableColors();
+    
+    for (int i=0; i<grayscaleVerticalLine.size(); i++) {
+        
+        //change vertex position based on orientation
+        verticalLine2.addVertex(ofVec3f((ofGetWidth()/2) + 1, i, 0));
+        float invertedGrayscaleColor = (grayscaleVerticalLine[i]) / 255.0;
+        verticalLine2.addColor(ofFloatColor(invertedGrayscaleColor,
+                                           invertedGrayscaleColor,
+                                           invertedGrayscaleColor,
+                                           1.0));
+    }
+    
+    verticalLine2.draw();
+    
+    //draw a line that shows the inverse colors, so we can understand what we're looking at/listeing to
+    ofMesh verticalLine3;
+    verticalLine3.setMode(OF_PRIMITIVE_LINE_STRIP);
+    verticalLine3.enableColors();
+    
+    for (int i=0; i<grayscaleVerticalLine.size(); i++) {
+        
+        //change vertex position based on orientation
+        verticalLine3.addVertex(ofVec3f((ofGetWidth()/2) - 1, i, 0));
+        float invertedGrayscaleColor = (grayscaleVerticalLine[i]) / 255.0;
+        verticalLine3.addColor(ofFloatColor(invertedGrayscaleColor,
+                                            invertedGrayscaleColor,
+                                            invertedGrayscaleColor,
+                                            1.0));
+    }
+    
+    verticalLine3.draw();
+    
     
 }
 
@@ -500,6 +581,47 @@ void ofApp::drawForLandscapeLeft(){
     }
     
     verticalLine.draw();
+    
+    //draw a line that shows the inverse colors, so we can understand what we're looking at/listeing to
+    ofMesh verticalLine2;
+    verticalLine2.setMode(OF_PRIMITIVE_LINE_STRIP);
+    verticalLine2.enableColors();
+    
+    //for (int i=grayscaleVerticalLine.size(); i>0; i--) {
+    for (int i=0; i<grayscaleVerticalLine.size(); i++){
+        
+        
+        //change vertex position based on orientation
+        verticalLine2.addVertex(ofVec3f(i, (ofGetHeight()/2) + 1, 0));
+        float invertedGrayscaleColor = (grayscaleVerticalLine[i]) / 255.0;
+        verticalLine2.addColor(ofFloatColor(invertedGrayscaleColor,
+                                           invertedGrayscaleColor,
+                                           invertedGrayscaleColor,
+                                           1.0));
+    }
+    
+    verticalLine2.draw();
+    
+    //draw a line that shows the inverse colors, so we can understand what we're looking at/listeing to
+    ofMesh verticalLine3;
+    verticalLine3.setMode(OF_PRIMITIVE_LINE_STRIP);
+    verticalLine3.enableColors();
+    
+    //for (int i=grayscaleVerticalLine.size(); i>0; i--) {
+    for (int i=0; i<grayscaleVerticalLine.size(); i++){
+        
+        
+        //change vertex position based on orientation
+        verticalLine3.addVertex(ofVec3f(i, (ofGetHeight()/2) - 1, 0));
+        float invertedGrayscaleColor = (grayscaleVerticalLine[i]) / 255.0;
+        verticalLine3.addColor(ofFloatColor(invertedGrayscaleColor,
+                                            invertedGrayscaleColor,
+                                            invertedGrayscaleColor,
+                                            1.0));
+    }
+    
+    verticalLine3.draw();
+
 
 }
 
@@ -528,6 +650,49 @@ void ofApp::drawForLandscapeRight(){
     }
     
     verticalLine.draw();
+    
+    //draw a line that shows the inverse colors, so we can understand what we're looking at/listeing to
+    ofMesh verticalLine2;
+    verticalLine2.setMode(OF_PRIMITIVE_LINE_STRIP);
+    verticalLine2.enableColors();
+    
+    //for (int i=grayscaleVerticalLine.size(); i>0; i--) {
+    for (int i=0; i<grayscaleVerticalLine.size(); i++){
+        
+        
+        //change vertex position based on orientation
+        
+        verticalLine2.addVertex(ofVec3f(i, (ofGetHeight()/2) + 1, 0));
+        float invertedGrayscaleColor = (grayscaleVerticalLine[i]) / 255.0;
+        verticalLine2.addColor(ofFloatColor(invertedGrayscaleColor,
+                                           invertedGrayscaleColor,
+                                           invertedGrayscaleColor,
+                                           1.0));
+    }
+    
+    verticalLine2.draw();
+    
+    //draw a line that shows the inverse colors, so we can understand what we're looking at/listeing to
+    ofMesh verticalLine3;
+    verticalLine3.setMode(OF_PRIMITIVE_LINE_STRIP);
+    verticalLine3.enableColors();
+    
+    //for (int i=grayscaleVerticalLine.size(); i>0; i--) {
+    for (int i=0; i<grayscaleVerticalLine.size(); i++){
+        
+        
+        //change vertex position based on orientation
+        
+        verticalLine3.addVertex(ofVec3f(i, (ofGetHeight()/2) - 1, 0));
+        float invertedGrayscaleColor = (grayscaleVerticalLine[i]) / 255.0;
+        verticalLine3.addColor(ofFloatColor(invertedGrayscaleColor,
+                                            invertedGrayscaleColor,
+                                            invertedGrayscaleColor,
+                                            1.0));
+    }
+    
+    verticalLine3.draw();
+
 
 }
 
