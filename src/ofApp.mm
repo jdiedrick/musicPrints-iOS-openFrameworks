@@ -319,8 +319,7 @@ void ofApp::updateForDefault(){
         invertedGrayscaleValue = invertedGrayscaleValue > THRESHOLD ? 255 : 0; // set a threshold, if over 200, its 255, else its 0
         grayscaleVerticalLine[y] = invertedGrayscaleValue; // store these values in an array
         
-        grayScaleVerticalLineSmall[y/DIVIDING_FACTOR] = (float)grayscaleVerticalLine[y]/255.0;
-        
+        //grayScaleVerticalLineSmall[y/DIVIDING_FACTOR] = (float)grayscaleVerticalLine[y]/255.0;
         
         if (grayscaleVerticalLine[y] == 255) {
             grayScaleVerticalLineSmall[y/DIVIDING_FACTOR] = 1;
@@ -328,8 +327,7 @@ void ofApp::updateForDefault(){
             grayScaleVerticalLineSmall[y/DIVIDING_FACTOR] = 0;
         }
          
-        
-        grayScaleVerticalLineSmall[y/DIVIDING_FACTOR] = ofMap(grayscaleVerticalLine[y], 0, 255, 0.0, 1.0);
+        //grayScaleVerticalLineSmall[y/DIVIDING_FACTOR] = ofMap(grayscaleVerticalLine[y], 0, 255, 0.0, 1.0);
 
     }
     
