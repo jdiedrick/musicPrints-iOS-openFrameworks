@@ -5,7 +5,7 @@
 #define BUFFER_SIZE 512
 #define THRESHOLD 200
 #define HIGH_FREQUENCY 2000
-#define LOW_FREQUENCY 80
+#define LOW_FREQUENCY 20
 #define DIVIDING_FACTOR 15
 #define INITIAL_VOLUME 0.5
 #define WAVEFORM_RESOLUTION 8
@@ -13,8 +13,8 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofBackground(255, 0, 0);
+    
     setupCamera();
-    flashlight.toggle(true);
     
     if(ofGetOrientation() == 1){
         resetForDefault();
@@ -25,6 +25,7 @@ void ofApp::setup(){
     } else if(ofGetOrientation() == 4){
         resetForLandscapeRight();
     }
+    
     setupAudio();
 
     
@@ -174,7 +175,7 @@ void ofApp::resetForDefault(){
     grayScaleVerticalLineSmall.clear();
 
     //setup oscillators
-    int numberofOscillators = grayImage.getHeight()/DIVIDING_FACTOR;
+    int numberofOscillators = ofGetHeight()/DIVIDING_FACTOR;
     for (int i=0; i<numberofOscillators; i++){
         oscillator osc;
         osc.setup(SAMPLE_RATE);
@@ -194,7 +195,7 @@ void ofApp::resetForDefault(){
         grayScaleVerticalLineSmall.push_back(0);
     }
     
-    //printOscillators();
+    printOscillators();
     
 }
 
@@ -318,18 +319,23 @@ void ofApp::updateForDefault(){
         invertedGrayscaleValue = invertedGrayscaleValue > THRESHOLD ? 255 : 0; // set a threshold, if over 200, its 255, else its 0
         grayscaleVerticalLine[y] = invertedGrayscaleValue; // store these values in an array
         
+        grayScaleVerticalLineSmall[y/DIVIDING_FACTOR] = (float)grayscaleVerticalLine[y]/255.0;
+        
+        
         if (grayscaleVerticalLine[y] == 255) {
             grayScaleVerticalLineSmall[y/DIVIDING_FACTOR] = 1;
         }else{
             grayScaleVerticalLineSmall[y/DIVIDING_FACTOR] = 0;
         }
+         
         
+        grayScaleVerticalLineSmall[y/DIVIDING_FACTOR] = ofMap(grayscaleVerticalLine[y], 0, 255, 0.0, 1.0);
+
     }
     
     //change osc volumes depending on black/white value in vertical line from camrea
     for (int i = 0; i<oscillators.size(); i++) {
-        float new_volume = grayScaleVerticalLineSmall[i];
-        oscillators[i].setVolume(new_volume);
+        oscillators[i].setVolume(grayScaleVerticalLineSmall[i]);
     }
     
 }
@@ -545,12 +551,11 @@ void ofApp::touchMoved(ofTouchEventArgs & touch){
 
 //--------------------------------------------------------------
 void ofApp::touchUp(ofTouchEventArgs & touch){
-    flashlight.state() == true ? flashlight.toggle(false) : flashlight.toggle(true);
 }
 
 //--------------------------------------------------------------
 void ofApp::touchDoubleTap(ofTouchEventArgs & touch){
-    
+    flashlight.state() == true ? flashlight.toggle(false) : flashlight.toggle(true);
 }
 
 //--------------------------------------------------------------
