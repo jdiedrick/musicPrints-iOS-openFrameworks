@@ -74,7 +74,7 @@
 		8E6972A81A7B9BDD0092DF7B /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8E6972A31A7B9BDD0092DF7B /* ofxXmlSettings.cpp */; };
 		8EDC9F3B1A731C820012F219 /* Icon60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EDC9F3A1A731C820012F219 /* Icon60@2x.png */; };
 		8EDC9F3D1A731FD30012F219 /* Default-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EDC9F3C1A731FD30012F219 /* Default-568h@2x~iphone.png */; };
-		8EDC9F421A73428B0012F219 /* Images-2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8EDC9F411A73428B0012F219 /* Images-2.xcassets */; };
+		8EDE5ADE1A7CF3C000A1C4A1 /* Images-2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8EDE5ADD1A7CF3BF00A1C4A1 /* Images-2.xcassets */; };
 		BB16EBD20F2B2A9500518274 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB16EBD10F2B2A9500518274 /* OpenGLES.framework */; };
 		BB16EBD90F2B2AB500518274 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB16EBD80F2B2AB500518274 /* QuartzCore.framework */; };
 		BBE5EAB80F49AD8400F28951 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBE5EAB70F49AD8400F28951 /* AudioToolbox.framework */; };
@@ -270,7 +270,7 @@
 		8E79CF8911DFABAFE23EA45B /* ofxCvConstants.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxCvConstants.h; path = ../../../addons/ofxOpenCv/src/ofxCvConstants.h; sourceTree = SOURCE_ROOT; };
 		8EDC9F3A1A731C820012F219 /* Icon60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon60@2x.png"; path = "bin/data/Icon60@2x.png"; sourceTree = "<group>"; };
 		8EDC9F3C1A731FD30012F219 /* Default-568h@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x~iphone.png"; path = "bin/data/Default-568h@2x~iphone.png"; sourceTree = "<group>"; };
-		8EDC9F411A73428B0012F219 /* Images-2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "Images-2.xcassets"; path = "musicPrints-iOS-openFrameworks.temp_caseinsensitive_rename/Images-2.xcassets"; sourceTree = "<group>"; };
+		8EDE5ADD1A7CF3BF00A1C4A1 /* Images-2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "Images-2.xcassets"; path = "musicPrints-iOS-openFrameworks.temp_caseinsensitive_rename/Images-2.xcassets"; sourceTree = "<group>"; };
 		946187321200AC04E570E6EC /* hierarchical_clustering_index.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = hierarchical_clustering_index.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/hierarchical_clustering_index.h; sourceTree = SOURCE_ROOT; };
 		974AACF856A0A1B7D8F259E0 /* result_set.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = result_set.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/result_set.h; sourceTree = SOURCE_ROOT; };
 		97CFAD0B2F2DB004A8A3BC0B /* objdetect.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = objdetect.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/objdetect/objdetect.hpp; sourceTree = SOURCE_ROOT; };
@@ -469,7 +469,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				8EDC9F411A73428B0012F219 /* Images-2.xcassets */,
+				8EDE5ADD1A7CF3BF00A1C4A1 /* Images-2.xcassets */,
 				678E130917951536005B6D19 /* Icon.png */,
 				678E130717951530005B6D19 /* Icon@2x.png */,
 				8EDC9F3C1A731FD30012F219 /* Default-568h@2x~iphone.png */,
@@ -969,7 +969,7 @@
 			files = (
 				8EDC9F3B1A731C820012F219 /* Icon60@2x.png in Resources */,
 				678E130817951530005B6D19 /* Icon@2x.png in Resources */,
-				8EDC9F421A73428B0012F219 /* Images-2.xcassets in Resources */,
+				8EDE5ADE1A7CF3C000A1C4A1 /* Images-2.xcassets in Resources */,
 				678E130A17951536005B6D19 /* Icon.png in Resources */,
 				8EDC9F3D1A731FD30012F219 /* Default-568h@2x~iphone.png in Resources */,
 				678E130C1795153C005B6D19 /* Default.png in Resources */,
@@ -1082,14 +1082,14 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Johann Diedrick (PLDHEEBW66)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Johann Diedrick (PLDHEEBW66)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ofxiOS_Prefix.pch;
 				INFOPLIST_FILE = "ofxiOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				PRODUCT_NAME = "musicPrints-iOS-openFrameworks.temp_caseinsensitive_rename";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "15a2ba9e-eccb-4b64-b01a-bc65ca25874a";
 				VALID_ARCHS = "armv6 armv7";
 			};
 			name = Debug;
@@ -1100,14 +1100,14 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Johann Diedrick (PLDHEEBW66)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Johann Diedrick (PLDHEEBW66)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ofxiOS_Prefix.pch;
 				INFOPLIST_FILE = "ofxiOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				PRODUCT_NAME = "musicPrints-iOS-openFrameworks.temp_caseinsensitive_rename";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "15a2ba9e-eccb-4b64-b01a-bc65ca25874a";
 				VALID_ARCHS = "armv6 armv7";
 			};
 			name = Release;
@@ -1119,8 +1119,8 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LIBRARY = "libstdc++";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Johann Diedrick (PLDHEEBW66)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Johann Diedrick (PLDHEEBW66)";
 				COMPRESS_PNG_FILES = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1173,8 +1173,8 @@
 					../../../addons/ofxOpenCv/libs/opencv/lib/ios/opencv_video.a,
 					../../../addons/ofxOpenCv/libs/opencv/lib/ios/zlib.a,
 				);
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "15a2ba9e-eccb-4b64-b01a-bc65ca25874a";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "15a2ba9e-eccb-4b64-b01a-bc65ca25874a";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv6 armv7";
@@ -1189,8 +1189,8 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LIBRARY = "libstdc++";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Johann Diedrick (PLDHEEBW66)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Johann Diedrick (PLDHEEBW66)";
 				COMPRESS_PNG_FILES = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = YES;
