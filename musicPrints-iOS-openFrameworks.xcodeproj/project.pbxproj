@@ -1089,7 +1089,7 @@
 				INFOPLIST_FILE = "ofxiOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				PRODUCT_NAME = "musicPrints-iOS-openFrameworks.temp_caseinsensitive_rename";
-				PROVISIONING_PROFILE = "15a2ba9e-eccb-4b64-b01a-bc65ca25874a";
+				PROVISIONING_PROFILE = "0dda2037-9b3c-4ae0-b37d-d6d0fcc740d7";
 				VALID_ARCHS = "armv6 armv7";
 			};
 			name = Debug;
@@ -1107,7 +1107,7 @@
 				INFOPLIST_FILE = "ofxiOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				PRODUCT_NAME = "musicPrints-iOS-openFrameworks.temp_caseinsensitive_rename";
-				PROVISIONING_PROFILE = "15a2ba9e-eccb-4b64-b01a-bc65ca25874a";
+				PROVISIONING_PROFILE = "0dda2037-9b3c-4ae0-b37d-d6d0fcc740d7";
 				VALID_ARCHS = "armv6 armv7";
 			};
 			name = Release;
@@ -1173,8 +1173,8 @@
 					../../../addons/ofxOpenCv/libs/opencv/lib/ios/opencv_video.a,
 					../../../addons/ofxOpenCv/libs/opencv/lib/ios/zlib.a,
 				);
-				PROVISIONING_PROFILE = "15a2ba9e-eccb-4b64-b01a-bc65ca25874a";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "15a2ba9e-eccb-4b64-b01a-bc65ca25874a";
+				PROVISIONING_PROFILE = "0dda2037-9b3c-4ae0-b37d-d6d0fcc740d7";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0dda2037-9b3c-4ae0-b37d-d6d0fcc740d7";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv6 armv7";
@@ -1242,7 +1242,7 @@
 					../../../addons/ofxOpenCv/libs/opencv/lib/ios/opencv_video.a,
 					../../../addons/ofxOpenCv/libs/opencv/lib/ios/zlib.a,
 				);
-				PROVISIONING_PROFILE = "15a2ba9e-eccb-4b64-b01a-bc65ca25874a";
+				PROVISIONING_PROFILE = "0dda2037-9b3c-4ae0-b37d-d6d0fcc740d7";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv6 armv7";

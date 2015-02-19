@@ -104,8 +104,6 @@ void ofApp::setupCamera(){
 void ofApp::setupAudio(){
     
     //setup audio
-    //int sampleRate = SAMPLE_RATE;
-    //int bufferSize = BUFFER_SIZE;
     ofSoundStreamSetup(2, 0, this, SAMPLE_RATE, BUFFER_SIZE, 4);
 
 }
@@ -371,7 +369,7 @@ void ofApp::updateForLandscapeLeft(){
     for(int y=0; y<grayImage.getHeight(); y++){
         for (int x=0; x<grayImage.getWidth(); x++) {
             
-            if (y == grayImage.getWidth()/2) {
+            if (y == grayImage.getHeight()/2) {
                 int position = x + (y * grayImage.getWidth());
                 float invertedGrayscaleValue = 255 - grayImagePixels[position];
                 invertedGrayscaleValue = invertedGrayscaleValue > thresholdVal ? 255 : 0; // set a threshold, if over 200, its 255, else its 0
@@ -401,7 +399,7 @@ void ofApp::updateForLandscapeRight(){
     for(int y=0; y<grayImage.getHeight(); y++){
         for (int x=0; x<grayImage.getWidth(); x++) {
             
-            if (y == grayImage.getWidth()/2) {
+            if (y == grayImage.getHeight()/2) {
                 int position = x + (y * grayImage.getWidth());
                 float invertedGrayscaleValue = 255 - grayImagePixels[position];
                 invertedGrayscaleValue = invertedGrayscaleValue > thresholdVal ? 255 : 0; // set a threshold, if over 200, its 255, else its 0
@@ -743,7 +741,8 @@ void ofApp::touchUp(ofTouchEventArgs & touch){
 
 //--------------------------------------------------------------
 void ofApp::touchDoubleTap(ofTouchEventArgs & touch){
-    flashlight.state() == true ? flashlight.toggle(false) : flashlight.toggle(true);
+    //flashlight.state() == true ? flashlight.toggle(false) : flashlight.toggle(true);
+    gui->toggleVisible();
 }
 
 //--------------------------------------------------------------
