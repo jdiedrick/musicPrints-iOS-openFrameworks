@@ -12,7 +12,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    ofBackground(255, 0, 0);
+    ofBackground(0, 0, 0);
     setupUI();
     setupCamera();
     
