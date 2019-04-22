@@ -3,7 +3,7 @@
 
 #define SAMPLE_RATE 44100
 #define BUFFER_SIZE 512
-#define THRESHOLD 100
+#define THRESHOLD 190
 #define HIGH_FREQUENCY 2000
 #define LOW_FREQUENCY 20
 #define DIVIDING_FACTOR 25
@@ -27,6 +27,8 @@ void ofApp::setup(){
     }
     
     setupAudio();
+    
+    gui->toggleVisible();
 
     
 }
@@ -96,7 +98,7 @@ void ofApp::setupCamera(){
     cout << "of w: " << ofGetWidth() << " of h: " << ofGetHeight() << endl;
     cout << "grabber w: " << grabber.getWidth() << " of h: " << grabber.getHeight() << endl;
     
-    thresholdVal = 100;
+    thresholdVal = THRESHOLD;
 }
 
 #pragma mark - Audio
@@ -742,7 +744,7 @@ void ofApp::touchUp(ofTouchEventArgs & touch){
 //--------------------------------------------------------------
 void ofApp::touchDoubleTap(ofTouchEventArgs & touch){
     //flashlight.state() == true ? flashlight.toggle(false) : flashlight.toggle(true);
-    gui->toggleVisible();
+    //gui->toggleVisible();
 }
 
 //--------------------------------------------------------------
